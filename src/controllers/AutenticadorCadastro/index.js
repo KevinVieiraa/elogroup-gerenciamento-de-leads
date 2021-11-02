@@ -1,3 +1,5 @@
+import Armazenamento from '../Armazenamento'
+
 export default function(input_usuario, input_senha, input_confirmacao_senha) {
     let resposta = {
         mensagem_erro: '',
@@ -9,18 +11,11 @@ export default function(input_usuario, input_senha, input_confirmacao_senha) {
     //Verifica se a senha obedece os pre requisitos
     if(regex_senha.test(input_senha)) {
         if(input_senha == input_confirmacao_senha) {
-            let dados_usuarios = JSON.parse(localStorage.getItem('usuarios'));
-
             //Verifica se ja foi criado um usuario igual
-            let usuario_encontrado = dados_usuarios.find(usuario => usuario.usuario === input_usuario);
+            let usuario_encontrado = Armazenamento.EncontrarIdUsuario(input_usuario);
             if(!usuario_encontrado) {
-                dados_usuarios.push({
-                    usuario: input_usuario,
-                    senha: input_senha,
-                    leads_cadastrados: []
-                })
-
-                localStorage.setItem('usuarios', JSON.stringify(dados_usuarios));
+                let usuario = Armazenamento.CadastraNovoUsuario(input_usuario, input_senha);
+                Armazenamento.LogarUsuario(usuario);
                 resposta.foi_cadastrado = true;
             }
             else {

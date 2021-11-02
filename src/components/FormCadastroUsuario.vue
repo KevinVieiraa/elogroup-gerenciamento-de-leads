@@ -19,6 +19,7 @@
                 <!--<div class="container-input">
                     <input type="submit" class="botao-cadastrar" value="Cadastrar-se">
                 </div>-->
+                <br>
                 <BotaoPrincipal texto_botao="Cadastrar-se" />
             </form>
             <h2>ou <a href="/">entrar</a></h2>
@@ -30,7 +31,8 @@
     import MensagemErro from './MensagemErro.vue';
     import BotaoPrincipal from './BotaoPrincipal.vue';
     import AutenticadorCadastro from '../controllers/AutenticadorCadastro'
-
+    import Armazenamento from '../controllers/Armazenamento';
+    
     export default {
         name: 'FormCadastroUsuario',
         data() {
@@ -43,7 +45,8 @@
         },
         components: {
             BotaoPrincipal,
-            MensagemErro
+            MensagemErro,
+            Armazenamento
         },
         methods: {
             AutenticadorCadastro,
@@ -59,6 +62,11 @@
                     this.input_confirmacao_senha = '';
                 }
                 //Enviar resposta para o pai como autenticado = true
+            }
+        },
+        beforeCreate() {
+            if(Armazenamento.UsuarioLogado()) {
+                this.$router.replace('/gerenciamento');
             }
         }
     }

@@ -12,6 +12,7 @@
                     <input type="password" id="senha" name="senha" v-model="input_senha" placeholder="" required oninvalid="this.setCustomValidity('Insira sua senha aqui')" oninput="this.setCustomValidity('')">
                 </div>
                 <MensagemErro :mensagem="mensagem_erro_login" v-show="mensagem_erro_login" />
+                <br>
                 <!--<div class="container-input">
                     <input type="submit" class="botao-login" value="Entrar">
                 </div>-->
@@ -25,7 +26,8 @@
 <script>
     import BotaoPrincipal from './BotaoPrincipal.vue';
     import MensagemErro from './MensagemErro.vue';
-    import AutenticadorLogin from '../controllers/AutenticadorLogin'
+    import AutenticadorLogin from '../controllers/AutenticadorLogin';
+    import Armazenamento from '../controllers/Armazenamento';
 
     export default {
         name: 'FormLogin',
@@ -38,18 +40,26 @@
         },
         components: {
             BotaoPrincipal,
-            MensagemErro
+            MensagemErro,
+            Armazenamento
         },
         methods: {
             AutenticadorLogin,
-            async tentarAutenticar(e) {
-                e.preventDefault();
+            async tentarAutenticar(evento) {
+                evento.preventDefault();
                 const res = await AutenticadorLogin(this.input_usuario, this.input_senha);
 
-                this.input_usuario = '';
-                this.input_senha = '';
                 this.mensagem_erro_login = res.mensagem_erro;
-                //Enviar resposta para o pai como autenticado = true
+
+                if(res.foi_autenticado) {
+                    console.log("Redirecionando para gerenciamento");
+                    this.$router.replace('/gerenciamento');
+                }
+            }
+        },
+        beforeCreate() {
+            if(Armazenamento.UsuarioLogado()) {
+                this.$router.replace('/gerenciamento');
             }
         }
     }

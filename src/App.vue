@@ -4,11 +4,12 @@
 
 <script>
 	import Header from './components/Header.vue';
-	import SincronizadorArmazenamento from './controllers/SincronizadorArmazenamento'
+	import Armazenamento from './controllers/Armazenamento'
 
 	export default {
 		components: {
-			Header
+			Header,
+			Armazenamento
 		},
 		data() {
 			return {
@@ -17,10 +18,10 @@
 			}
 		},
 		methods: {
-			SincronizadorArmazenamento
+
 		},
-		mounted() {
-			SincronizadorArmazenamento();
+		beforeCreate() {
+			Armazenamento.Inicializar();
 		}
 	}
 </script>
