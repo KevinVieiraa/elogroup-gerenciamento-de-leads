@@ -1,5 +1,9 @@
 <template>
-    
+    <div id="header-gerenciamento">
+        <router-link to="/" id="logo-url">
+        <img src="/imagens/logo.jpg" :alt="alt" id="logo">
+        </router-link>
+    </div>
 </template>
 
 <script>
@@ -10,17 +14,13 @@
 </script>
 
 <style scoped>
-    #header {
-        background-color: #e9e9e9;
-        padding: 15px 0px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    #header-gerenciamento {
+        height: 60px;
+		background-color: #171b1c;
+		box-shadow: 0 1px 5px rgba(0, 0, 0, 0.459);
     }
 
-    #logo {
-        width: 100%px;
-        height: 80px;
-        margin-top: 0px;
+    #header-gerenciamento img {
+        height: 100%;
     }
 </style>

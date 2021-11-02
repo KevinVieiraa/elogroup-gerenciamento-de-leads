@@ -12,9 +12,10 @@
                     <input type="password" id="senha" name="senha" v-model="input_senha" placeholder="" required oninvalid="this.setCustomValidity('Insira sua senha aqui')" oninput="this.setCustomValidity('')">
                 </div>
                 <MensagemErro :mensagem="mensagem_erro_login" v-show="mensagem_erro_login" />
-                <div class="container-input">
+                <!--<div class="container-input">
                     <input type="submit" class="botao-login" value="Entrar">
-                </div>
+                </div>-->
+                <BotaoPrincipal texto_botao="Entrar" />
             </form>
             <h2>ou <a href="/cadastro">cadastre-se</a></h2>
         </div>
@@ -22,6 +23,7 @@
 </template>
 
 <script>
+    import BotaoPrincipal from './BotaoPrincipal.vue';
     import MensagemErro from './MensagemErro.vue';
     import AutenticadorLogin from '../controllers/AutenticadorLogin'
 
@@ -35,7 +37,8 @@
             }
         },
         components: {
-            MensagemErro,
+            BotaoPrincipal,
+            MensagemErro
         },
         methods: {
             AutenticadorLogin,
@@ -91,25 +94,6 @@
         display: flex;
         flex-direction: column;
         margin-bottom: 20px;
-    }
-
-    .botao-login {
-        background-color: #14202C;
-        border: 2px solid #14202C;
-        border-radius: 2px;
-        color: white;
-        height: 50px;
-        padding: 10px;
-        margin: 0 auto;
-        margin-top: 55px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: 0.5s;
-    }
-
-    .botao-login:hover {
-        background-color: transparent;
-        color: #14202C;
     }
 
     input{

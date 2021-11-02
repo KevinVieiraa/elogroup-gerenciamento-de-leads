@@ -1,11 +1,11 @@
 <template>
-  	<div class="conteudo">
+  	<div class="conteudo-forms">
 		  <FormCadastro />
   	</div>
 </template>
 
 <script>
-	import FormCadastro from '../components/FormCadastro.vue'
+	import FormCadastroUsuario from '../components/FormCadastroUsuario.vue'
 
 	export default {
 		name: 'Cadastro',

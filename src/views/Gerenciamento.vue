@@ -1,5 +1,23 @@
 <template>
-	<div class="gerenciamento">
-		<h1>Pagina de gerenciamento</h1>
-	</div>
+	<Header />
+	<div>
+		<JanelaGerenciamento />
+  	</div>
 </template>
+
+<script>
+	import Header from '../components/Header.vue'
+	import JanelaGerenciamento from '../components/JanelaGerenciamento.vue'
+
+	export default {
+		name: 'Gerenciamento',
+		components: {
+			Header,
+			JanelaGerenciamento
+		}
+	}
+</script>
+
+<style scoped>
+	
+</style>

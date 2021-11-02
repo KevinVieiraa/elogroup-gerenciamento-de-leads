@@ -16,9 +16,10 @@
                     <input type="password" id="confirmacao_senha" name="confirmacao_senha" v-model="input_confirmacao_senha" placeholder="" required oninvalid="this.setCustomValidity('Repita sua senha aqui')" oninput="this.setCustomValidity('')">
                 </div>
                 <MensagemErro :mensagem="mensagem_erro_cadastro" v-show="mensagem_erro_cadastro" />
-                <div class="container-input">
+                <!--<div class="container-input">
                     <input type="submit" class="botao-cadastrar" value="Cadastrar-se">
-                </div>
+                </div>-->
+                <BotaoPrincipal texto_botao="Cadastrar-se" />
             </form>
             <h2>ou <a href="/">entrar</a></h2>
         </div>
@@ -27,10 +28,11 @@
 
 <script>
     import MensagemErro from './MensagemErro.vue';
+    import BotaoPrincipal from './BotaoPrincipal.vue';
     import AutenticadorCadastro from '../controllers/AutenticadorCadastro'
 
     export default {
-        name: 'FormCadastro',
+        name: 'FormCadastroUsuario',
         data() {
             return{
                 input_usuario: "",
@@ -40,7 +42,8 @@
             }
         },
         components: {
-            MensagemErro,
+            BotaoPrincipal,
+            MensagemErro
         },
         methods: {
             AutenticadorCadastro,
@@ -100,25 +103,6 @@
         display: flex;
         flex-direction: column;
         margin-bottom: 20px;
-    }
-
-    .botao-cadastrar {
-        background-color: #14202C;
-        border: 2px solid #14202C;
-        border-radius: 2px;
-        color: white;
-        height: 50px;
-        padding: 10px;
-        margin: 0 auto;
-        margin-top: 55px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: 0.5s;
-    }
-
-    .botao-login:hover {
-        background-color: transparent;
-        color: #14202C;
     }
 
     input{

@@ -1,5 +1,5 @@
 <template>
-  	<div class="conteudo">
+  	<div class="conteudo-forms">
 		  <FormLogin />
   	</div>
 </template>
