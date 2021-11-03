@@ -35,7 +35,7 @@
             return{
                 input_usuario: "",
                 input_senha: "",
-                mensagem_erro_login: "", //Usuário ou senha incorretos
+                mensagem_erro_login: "",
             }
         },
         components: {
@@ -52,13 +52,14 @@
                 this.mensagem_erro_login = res.mensagem_erro;
 
                 if(res.foi_autenticado) {
-                    console.log("Redirecionando para gerenciamento");
+                    //console.log("Redirecionando para gerenciamento");
+
                     this.$router.replace('/gerenciamento');
                 }
             }
         },
         beforeCreate() {
-            if(Armazenamento.UsuarioLogado()) {
+            if(Armazenamento.UsuarioEstaLogado()) {
                 this.$router.replace('/gerenciamento');
             }
         }

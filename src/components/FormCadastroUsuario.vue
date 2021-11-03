@@ -60,12 +60,13 @@
                     this.input_usuario = '';
                     this.input_senha = '';
                     this.input_confirmacao_senha = '';
+
+                    this.$router.replace('/gerenciamento');
                 }
-                //Enviar resposta para o pai como autenticado = true
             }
         },
         beforeCreate() {
-            if(Armazenamento.UsuarioLogado()) {
+            if(Armazenamento.UsuarioEstaLogado()) {
                 this.$router.replace('/gerenciamento');
             }
         }

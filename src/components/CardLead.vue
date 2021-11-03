@@ -1,10 +1,9 @@
 <template>
-    <div class="card-lead">
-        <h1>{{ nome_lead }}</h1>
+    <div class="card-lead" draggable="true" @dragstart="comecarMover">
+        <h1>{{ objeto_lead.nome }}</h1>
         <br>
-        <h2>{{ email_lead }}</h2>
-        <h2>{{ tel_lead }}</h2>
-        <h2>{{ id_card }}</h2>
+        <h2>{{ objeto_lead.email }}</h2>
+        <h2>{{ objeto_lead.telefone }}</h2>
     </div>
 </template>
 
@@ -19,16 +18,18 @@
             }
         },
         props: {
-            nome_lead: String,
-            email_lead: String,
-            tel_lead: String
+            objeto_lead: null,
         },
         methods: {
-
+            comecarMover(event) {
+                event.dataTransfer.dropEffect = 'move';
+                event.dataTransfer.effectAllowed = 'move';
+                event.dataTransfer.setData('nome_card', this.objeto_lead.nome);
+            }
         },
         mounted() {
             this.id_card = CriadorID.novoId();
-            console.log(this.id_card);
+            //console.log(this.id_card);
         }
     }
 </script>

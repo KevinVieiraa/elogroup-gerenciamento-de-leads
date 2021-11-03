@@ -7,14 +7,12 @@
                 <h1>Painel de Leads</h1>
             </div>
             <div id="container-leads">
-
                 <div class="coluna-leads">
                     <div class="titulo-coluna">
                         <h1>Cliente em Potencial</h1>
                     </div>
-                    <div class="container-cards">
-                        <CardLead nome_lead="Vale" email_lead="vale@email.com" tel_lead="(27) 99654-3554" />
-                        <CardLead nome_lead="Garoto" email_lead="garoto@email.com" tel_lead="(27) 99654-3554" />
+                    <div class="container-cards" @drop="colocarCard($event, 1)" @dragenter.prevent @dragover.prevent>
+                        <CardLead v-for="lead in leads_em_potencial" :key="lead.id" :objeto_lead="lead"/>
                         <div id="container-botao-lead">
                             <BotaoPrincipal texto_botao="Novo Lead (+)" @click="mostrarCadastro"/>
                         </div>
@@ -25,11 +23,8 @@
                     <div class="titulo-coluna">
                         <h1>Dados Confirmados</h1>
                     </div>
-                    <div class="container-cards">
-                        <CardLead nome_lead="Nubank" email_lead="nubank@email.com" tel_lead="(27) 99654-3554" />
-                        <CardLead nome_lead="Picpay" email_lead="Picpay@email.com" tel_lead="(27) 99654-3554" />
-                        <CardLead nome_lead="Perdigão" email_lead="perdigao@email.com" tel_lead="(27) 99654-3554" />
-                        <CardLead nome_lead="Casas Bahia" email_lead="casasbahia@email.com" tel_lead="(27) 99654-3554" />
+                    <div class="container-cards" @drop="colocarCard($event, 2)" @dragenter.prevent @dragover.prevent>
+                        <CardLead v-for="lead in leads_dados_confirmados" :key="lead.id" :objeto_lead="lead"/>
                     </div>
                 </div>
 
@@ -37,8 +32,8 @@
                     <div class="titulo-coluna">
                         <h1>Reunião Agendada</h1>
                     </div>
-                    <div class="container-cards">
-                        <CardLead nome_lead="Facebook" email_lead="facebook@email.com" tel_lead="(27) 99654-3554" />
+                    <div class="container-cards" @drop="colocarCard($event, 3)" @dragenter.prevent @dragover.prevent>
+                        <CardLead v-for="lead in leads_reuniao_agendada" :key="lead.id" :objeto_lead="lead"/>
                     </div>
                 </div>
             </div>
@@ -50,18 +45,37 @@
     import BotaoPrincipal from './BotaoPrincipal.vue';
     import CardLead from './CardLead.vue';
     import FormCadastroLead from './FormCadastroLead.vue';
+    import Armazenamento from '../controllers/Armazenamento';
 
     export default {
         name: 'JanelaGerenciamento',
         data() {
             return {
-                mostrar_cadastro_leads: false
+                mostrar_cadastro_leads: false,
+                lista_leads: [],
+                //leads_em_potencial: [],
+                //leads_dados_confirmados: [],
+                //leads_reuniao_agendada: []
             }
         },
         components: {
             BotaoPrincipal,
             CardLead,
-            FormCadastroLead
+            FormCadastroLead,
+            Armazenamento
+        },
+        computed: {
+            leads_em_potencial: function() {
+                return this.lista_leads.filter((lead) => lead.status == 1);
+            },
+
+            leads_dados_confirmados: function() {
+                return this.lista_leads.filter((lead) => lead.status == 2);
+            },
+
+            leads_reuniao_agendada: function() {
+                return this.lista_leads.filter((lead) => lead.status == 3);
+            }
         },
         methods: {
             mostrarCadastro() {
@@ -69,7 +83,31 @@
             },
             esconderCadastro() {
                 this.mostrar_cadastro_leads = false;
+            },
+            async carregarLeads() {
+                this.lista_leads = Armazenamento.LeadsUsuarioLogado();
+            },
+            colocarCard(event, status_coluna) {
+                //Recupera os dados do card
+                const nome_card = event.dataTransfer.getData('nome_card');
+
+                //Indice onde o card estava na lista
+                const indice_lead = this.lista_leads.findIndex((item => item.nome == nome_card));
+                let lead_arrastado = this.lista_leads[indice_lead];
+
+                if(Armazenamento.AtualizaStatusLead(lead_arrastado, status_coluna)) {
+                    //Atualiza a lista de leads com os status atualizados
+                    this.carregarLeads();
+                }
             }
+        },
+        beforeCreate() {
+            if(!Armazenamento.UsuarioEstaLogado()) {
+                this.$router.replace('/login');
+            }
+        },
+        mounted() {
+            this.carregarLeads();
         }
     }
 </script>

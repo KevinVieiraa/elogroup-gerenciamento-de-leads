@@ -6,7 +6,7 @@
                     <div id="titulo-cadastro">
                         <h1>Novo Lead</h1>
                     </div>
-                    <form id="form-cadastro-lead" @submit="tentarAutenticar">
+                    <form id="form-cadastro-lead" @submit="cadastrarLead">
                         <div class="container-input">
                             <label for="usuario">Nome*</label>
                             <input type="text" id="usuario" name="usuario" v-model="input_nome_cliente" placeholder="" required oninvalid="this.setCustomValidity('Insira nome do cliente aqui')" oninput="this.setCustomValidity('')">
@@ -57,6 +57,7 @@
 <script>
     import JanelaFlutuante from './JanelaFlutuante.vue';
     import BotaoPrincipal from './BotaoPrincipal.vue';
+    import Armazenamento from '../controllers/Armazenamento';
 
     export default {
         name: 'FormCadastroLead',
@@ -73,7 +74,8 @@
         },
         components: {
             JanelaFlutuante,
-            BotaoPrincipal
+            BotaoPrincipal,
+            Armazenamento
         },
         methods: {
             fecharJanela() {
@@ -85,6 +87,10 @@
                 this.oportunidade_produto_digital = false;
                 this.oportunidade_analytics = false;
                 this.oportunidade_bpm = false;
+            },
+            cadastrarLead() {
+                //console.log("Cadastrou lead");
+                Armazenamento.AdicionarLeadUsuarioLogado(this.input_nome_cliente, this.input_telefone_cliente, this.input_email_cliente, ["RPA, Analytics, BPM"]);
             }
         }
     }
