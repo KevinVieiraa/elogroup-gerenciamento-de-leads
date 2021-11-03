@@ -24,25 +24,28 @@
                         <label >Oportunidades*</label>
                         <br>
                         <div class="container-checkbox">
-                            <input type="checkbox" name="todos" id="todos">
+                            <input type="checkbox" name="todos" id="todos" v-model="oportunidade_todos" @click="marcarTodos">
                             <label for="todos">Todos</label>
                         </div>
                         <div class="container-checkbox">
-                            <input type="checkbox" name="RPA" id="rpa" v-model="oportunidade_rpa">
+                            <input type="checkbox" name="RPA" id="rpa" v-model="oportunidade_rpa" @click="atualizarCheckboxtodos">
                             <label for="rpa">RPA</label>
                         </div>
                         <div class="container-checkbox">
-                            <input type="checkbox" name="Produto Digital" id="produto_digital" v-model="oportunidade_produto_digital">
+                            <input type="checkbox" name="Produto Digital" id="produto_digital" v-model="oportunidade_produto_digital" @click="atualizarCheckboxtodos">
                             <label for="produto_digital">Produto Digital</label>
                         </div>
                         <div class="container-checkbox">
-                            <input type="checkbox" name="Analytics" id="analytics" v-model="oportunidade_analytics">
+                            <input type="checkbox" name="Analytics" id="analytics" v-model="oportunidade_analytics" @click="atualizarCheckboxtodos">
                             <label for="analytics">Analytics</label>
                         </div>
                         <div class="container-checkbox">
-                            <input type="checkbox" name="BPM" id="bpm" v-model="oportunidade_bpm">
+                            <input type="checkbox" name="BPM" id="bpm" v-model="oportunidade_bpm" @click="atualizarCheckboxtodos">
                             <label for="bpm">BPM</label>
                         </div>
+
+                        <br>
+                        <MensagemErro :mensagem="mensagem_erro_cadastro" v-show="mensagem_erro_cadastro" />
 
                         <div id="container-botao-salvar-lead">
                             <BotaoPrincipal texto_botao="Salvar" />
@@ -57,6 +60,8 @@
 <script>
     import JanelaFlutuante from './JanelaFlutuante.vue';
     import BotaoPrincipal from './BotaoPrincipal.vue';
+    import MensagemErro from './MensagemErro.vue';
+    import AutenticadorCadastroLead from '../controllers/AutenticadorCadastroLead';
     import Armazenamento from '../controllers/Armazenamento';
 
     export default {
@@ -69,12 +74,16 @@
                 oportunidade_rpa: false,
                 oportunidade_produto_digital: false,
                 oportunidade_analytics: false,
-                oportunidade_bpm: false
+                oportunidade_bpm: false,
+                oportunidade_todos: false,
+                mensagem_erro_cadastro: ''
             }
         },
         components: {
             JanelaFlutuante,
+            MensagemErro,
             BotaoPrincipal,
+            AutenticadorCadastroLead,
             Armazenamento
         },
         methods: {
@@ -88,9 +97,50 @@
                 this.oportunidade_analytics = false;
                 this.oportunidade_bpm = false;
             },
-            cadastrarLead() {
-                //console.log("Cadastrou lead");
-                Armazenamento.AdicionarLeadUsuarioLogado(this.input_nome_cliente, this.input_telefone_cliente, this.input_email_cliente, ["RPA, Analytics, BPM"]);
+            marcarTodos() {
+                //Atraso para executar a logica. Precisa desse tempo para o valor do checkbox atualizar na variavel
+                setTimeout(() => {
+                    this.oportunidade_rpa = this.oportunidade_todos;
+                    this.oportunidade_produto_digital = this.oportunidade_todos;
+                    this.oportunidade_analytics = this.oportunidade_todos;
+                    this.oportunidade_bpm = this.oportunidade_todos;
+
+                    console.log("oportunidade_todos: " + this.oportunidade_todos);
+                    console.log("oportunidade_rpa: " + this.oportunidade_rpa);
+                }, 0);
+            },
+            atualizarCheckboxtodos() {
+                setTimeout(() => {
+                    this.oportunidade_todos = (this.oportunidade_rpa && this.oportunidade_produto_digital && this.oportunidade_analytics && this.oportunidade_bpm);
+                }, 0);
+            },
+            async cadastrarLead(evento) {
+                evento.preventDefault();
+                const resposta = await AutenticadorCadastroLead(
+                    this.input_nome_cliente, 
+                    this.input_telefone_cliente, 
+                    this.input_email_cliente, 
+                    this.oportunidade_rpa, 
+                    this.oportunidade_produto_digital, 
+                    this.oportunidade_analytics, 
+                    this.oportunidade_bpm
+                );
+
+                this.mensagem_erro_cadastro = resposta.mensagem_erro;
+                if(resposta.foi_cadastrado) {
+                    console.log("Usuario cadastrado");
+                    this.$emit('cadastrado');
+                    //Limpa os inputs
+                    this.input_nome_cliente = "";
+                    this.input_telefone_cliente = "";
+                    this.input_email_cliente = "";
+                    this.oportunidade_rpa = false;
+                    this.oportunidade_produto_digital = false;
+                    this.oportunidade_analytics = false;
+                    this.oportunidade_bpm = false;
+                    this.oportunidade_todos = false;
+                    this.fecharJanela();
+                }
             }
         }
     }

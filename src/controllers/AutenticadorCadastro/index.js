@@ -6,7 +6,7 @@ export default function(input_usuario, input_senha, input_confirmacao_senha) {
         foi_cadastrado: false
     };
 
-    const regex_senha = /(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%&*^~*+-]).{8,}/
+    const regex_senha = /(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%&*^~*+-_.]).{8,}/
 
     //Verifica se a senha obedece os pre requisitos
     if(regex_senha.test(input_senha)) {

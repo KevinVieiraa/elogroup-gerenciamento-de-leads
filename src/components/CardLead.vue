@@ -24,12 +24,11 @@
             comecarMover(event) {
                 event.dataTransfer.dropEffect = 'move';
                 event.dataTransfer.effectAllowed = 'move';
-                event.dataTransfer.setData('nome_card', this.objeto_lead.nome);
+                event.dataTransfer.setData('id_card', this.objeto_lead.id);
             }
         },
         mounted() {
             this.id_card = CriadorID.novoId();
-            //console.log(this.id_card);
         }
     }
 </script>
@@ -38,7 +37,7 @@
     .card-lead {
         margin: 10px 30px 10px 30px;
         padding: 20px;
-        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.459);
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
         background-color: rgb(255, 255, 255);
         cursor: grab;
     }

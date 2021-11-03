@@ -6,7 +6,7 @@
 
         <div>
             <router-link to="/">
-                <a @click="desconectar">Desconectar</a>
+                <h1>Olá {{ nome_usuario }}, <a @click="desconectar">Desconectar</a></h1>
             </router-link>
         </div>
     </div>
@@ -17,7 +17,11 @@
 
     export default {
         name: 'Header',
-        props: ['url_logo', 'alt_logo'],
+        data() {
+            return {
+                nome_usuario: ''
+            }
+        },
         components: {
             Armazenamento
         },
@@ -27,6 +31,9 @@
                 Armazenamento.DeslogarUsuario();
                 this.$router.replace('/login');
             }
+        },
+        mounted() {
+            this.nome_usuario = Armazenamento.NomeUsuarioLogado();
         }
     }
 </script>
@@ -49,10 +56,20 @@
         align-items: center;
     }
 
-     #header-gerenciamento a{
+    #header-gerenciamento h1{
         text-decoration: none;
         margin-right: 15px;
         border: none;
+        font-size: 15px;
         color: white;
+        cursor: default;
+    }
+
+    #header-gerenciamento a{
+        text-decoration: none;
+        margin-right: 15px;
+        border: none;
+        color: rgb(100, 144, 153);
+        cursor: pointer;
     }
 </style>

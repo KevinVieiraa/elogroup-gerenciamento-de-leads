@@ -62,6 +62,11 @@ const funcoes = {
         return usuario_logado.leads_cadastrados;
     },
 
+    NomeUsuarioLogado() {
+        let usuario_logado = JSON.parse(localStorage.getItem('usuarioLogado'));
+        return usuario_logado.usuario;
+    },
+
     AtualizaUsuarioArmazenamento(usuario_atualizado) {
         //Atualiza os dados de um usuario no localstorage 
         let usuarios = JSON.parse(localStorage.getItem('usuarios'));
@@ -83,12 +88,14 @@ const funcoes = {
         }
 
         let usuario_logado = JSON.parse(localStorage.getItem('usuarioLogado'));
+        const id_unico = Date.now(); //Atribui a cada card um id unico baseado no tempo em segundos desde 1970
         usuario_logado.leads_cadastrados.push({
             nome: nome_lead,
             telefone: telefone_lead,
             email: email_lead,
             oportunidades: oportunidades_lead,
-            status: 1
+            status: 1,
+            id: id_unico
         });
 
         //Atualiza as informacoes do usuario logado

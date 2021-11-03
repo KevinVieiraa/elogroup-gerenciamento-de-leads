@@ -1,7 +1,15 @@
 <template>
     <div>
-        <FormCadastroLead v-show="mostrar_cadastro_leads" @fechar="esconderCadastro" />
+        <FormCadastroLead v-show="mostrar_cadastro_leads" @fechar="esconderCadastro" @cadastrado="cadastroConcluido"/>
         
+        <JanelaFlutuante v-show="mostrar_confirmacao_cadastro" @fechar="esconderConfirmacaoCadastro">
+            <template v-slot:conteudo>
+                <div id="janela-confirmacao-cadastro">
+                    <h1>Lead cadastrado com sucesso!</h1>
+                </div>
+            </template>
+        </JanelaFlutuante>
+
         <div id="painel-gerenciamento">
             <div id="titulo-painel">
                 <h1>Painel de Leads</h1>
@@ -44,6 +52,7 @@
 <script>
     import BotaoPrincipal from './BotaoPrincipal.vue';
     import CardLead from './CardLead.vue';
+    import JanelaFlutuante from './JanelaFlutuante.vue';
     import FormCadastroLead from './FormCadastroLead.vue';
     import Armazenamento from '../controllers/Armazenamento';
 
@@ -52,16 +61,15 @@
         data() {
             return {
                 mostrar_cadastro_leads: false,
+                mostrar_confirmacao_cadastro: false,
                 lista_leads: [],
-                //leads_em_potencial: [],
-                //leads_dados_confirmados: [],
-                //leads_reuniao_agendada: []
             }
         },
         components: {
             BotaoPrincipal,
             CardLead,
             FormCadastroLead,
+            JanelaFlutuante,
             Armazenamento
         },
         computed: {
@@ -84,15 +92,25 @@
             esconderCadastro() {
                 this.mostrar_cadastro_leads = false;
             },
+            mostrarConfirmacaoCadastro() {
+                this.mostrar_confirmacao_cadastro = true;
+            },
+            esconderConfirmacaoCadastro() {
+                this.mostrar_confirmacao_cadastro = false;
+            },
+            cadastroConcluido() {
+                this.carregarLeads();
+                this.mostrarConfirmacaoCadastro();
+            },
             async carregarLeads() {
                 this.lista_leads = Armazenamento.LeadsUsuarioLogado();
             },
             colocarCard(event, status_coluna) {
                 //Recupera os dados do card
-                const nome_card = event.dataTransfer.getData('nome_card');
+                const id_card = event.dataTransfer.getData('id_card');
 
                 //Indice onde o card estava na lista
-                const indice_lead = this.lista_leads.findIndex((item => item.nome == nome_card));
+                const indice_lead = this.lista_leads.findIndex((item => item.id == id_card));
                 let lead_arrastado = this.lista_leads[indice_lead];
 
                 if(Armazenamento.AtualizaStatusLead(lead_arrastado, status_coluna)) {
@@ -102,6 +120,7 @@
             }
         },
         beforeCreate() {
+            //Redireciona um usuario nao autenticado para a pagina de login
             if(!Armazenamento.UsuarioEstaLogado()) {
                 this.$router.replace('/login');
             }
@@ -113,6 +132,7 @@
 </script>
 
 <style scoped>
+
     #painel-gerenciamento {
         width: 100%;
         height: 750px;
@@ -147,6 +167,15 @@
         margin-top: 20px;
         display: flex;
         justify-content: center;
+    }
+
+    #janela-confirmacao-cadastro {
+        margin: 20px;
+        margin-top: 0px;
+    }
+
+    #janela-confirmacao-cadastro h1 {
+        font-size: 20px;
     }
 
     .titulo-coluna {
@@ -190,29 +219,14 @@
         width: 350px;
         margin-left: 5px;
         margin-right: 5px;
+        overflow: hidden;
     }
 
     .container-cards {
-        height: 100%;
+        height: 90%;
+        padding-bottom: 10%;
         overflow-y: auto;
-    }
-
-    .card-lead {
-        margin: 10px 30px 10px 30px;
-        padding: 20px;
-        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.459);
-        background-color: rgb(255, 255, 255);
-    }
-
-    .card-lead h1 {
-        font-size: 20px;
-        text-align: left;
-    }
-
-    .card-lead h2 {
-        color: rgb(182, 182, 182);
-        font-size: 13px;
-        text-align: left;
+        overflow-x: hidden;
     }
 
     @media screen and (min-height: 650px) {

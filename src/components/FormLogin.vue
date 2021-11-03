@@ -47,13 +47,12 @@
             AutenticadorLogin,
             async tentarAutenticar(evento) {
                 evento.preventDefault();
-                const res = await AutenticadorLogin(this.input_usuario, this.input_senha);
+                const resposta = await AutenticadorLogin(this.input_usuario, this.input_senha);
 
-                this.mensagem_erro_login = res.mensagem_erro;
+                this.mensagem_erro_login = resposta.mensagem_erro;
 
-                if(res.foi_autenticado) {
+                if(resposta.foi_autenticado) {
                     //console.log("Redirecionando para gerenciamento");
-
                     this.$router.replace('/gerenciamento');
                 }
             }
