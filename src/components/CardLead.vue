@@ -1,22 +1,29 @@
+<!--
+    Componente que representa um card que contém todas as informações de
+    um lead cadastrado. Pode ser arrastrado e colocado em outro container válido.
+-->
+
 <template>
     <div class="card-lead" draggable="true" @dragstart="comecarMover">
         <h1>{{ objeto_lead.nome }}</h1>
         <br>
-        <h2>{{ objeto_lead.email }}</h2>
-        <h2>{{ objeto_lead.telefone }}</h2>
+        <div id="container-info-card">
+            <div>
+                <h2>{{ objeto_lead.telefone }}</h2>
+                <h2>{{ objeto_lead.email }}</h2>
+            </div>
+        </div>
+        <div id="container-oportunidades">
+            <h2 v-for="(oportunidade, index) in objeto_lead.oportunidades" :key="index">
+                #{{ oportunidade }}&nbsp
+            </h2>
+        </div>
     </div>
 </template>
 
 <script>
-    import CriadorID from '../controllers/CriadorID';
-
     export default {
         name: 'CardLead',
-        data() {
-            return{
-                id_card: 0,
-            }
-        },
         props: {
             objeto_lead: null,
         },
@@ -26,9 +33,6 @@
                 event.dataTransfer.effectAllowed = 'move';
                 event.dataTransfer.setData('id_card', this.objeto_lead.id);
             }
-        },
-        mounted() {
-            this.id_card = CriadorID.novoId();
         }
     }
 </script>
@@ -52,4 +56,20 @@
         font-size: 13px;
         text-align: left;
     }
+
+    #container-info-card {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    #container-oportunidades {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    #container-oportunidades h2{
+        font-size: 12px;
+    }
+
+
 </style>

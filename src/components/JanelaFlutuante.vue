@@ -1,3 +1,10 @@
+<!--
+    Componente que encapsula a estrutura uma janela flutuante cuja abertura
+    e fechamento podem ser chamados pelo componente pai. Utilizada no 
+    cadastro de leads e na mensagem de confirmação de cadastro de leads.
+    O conteúdo é modificável.
+-->
+
 <template>
     <div class="janela-fundo">
         <div class="janela">

@@ -1,16 +1,22 @@
+/*
+    Módulo de Armazenamento
+    Contém as funções necessárias para a manipulação do 'banco de dados'(localstorage), evitando acesso
+    direto por outros componentes.
+*/
 const funcoes = {
     Inicializar() {
         //Criação dos usuarios no localstorage do navegador, em caso de primeiro acesso
         if(!localStorage.getItem('usuarios')) {
             localStorage.setItem('usuarios', JSON.stringify([]));
-            //console.log("Dados de usuarios nao econtrado. Criado um novo.");
             localStorage.setItem('usuarioLogado', JSON.stringify({}));
         }
-        //console.log("Dados Inicializados.");
     },
 
     EncontrarUsuarioCadastrado(id_usuario, senha_usuario) {
-        //Localiza no armazenamento um usuario com o id e a senha correspondentes
+        /*
+            Localiza no armazenamento um usuario com o id e a senha correspondentes
+            Retorna o usuário, caso localizado.
+        */
         let dados_usuarios = JSON.parse(localStorage.getItem('usuarios'));
         let usuario_encontrado = dados_usuarios.find(usuario => usuario.usuario === id_usuario && usuario.senha == senha_usuario);
 
@@ -18,7 +24,10 @@ const funcoes = {
     },
 
     EncontrarIdUsuario(id_usuario) {
-        //Localiza um usuario existente com o id correspondente
+        /*
+            Localiza um usuario existente com o id correspondente
+            Retorna o usuário, caso localizado.
+        */
         let dados_usuarios = JSON.parse(localStorage.getItem('usuarios'));
         let usuario_encontrado = dados_usuarios.find(usuario => usuario.usuario === id_usuario);
 
@@ -40,18 +49,19 @@ const funcoes = {
     },
 
     LogarUsuario(usuario) {
+        //Registra um usuário informado como logado no sistema.
         localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
-        //console.log("Logando usuario " + usuario.usuario);
     },
 
     DeslogarUsuario() {
+        //Deconecta o usuário que está logado no sistema, se houver
         if(this.UsuarioEstaLogado()) {
-            //console.log("Deslogando usuario " + JSON.parse(localStorage.getItem('usuarioLogado')).usuario);
             localStorage.setItem('usuarioLogado', JSON.stringify({}));
         }
     },
 
     UsuarioEstaLogado() {
+        //Informa se um usuário está logado
         let usuario_logado = localStorage.getItem('usuarioLogado') !== '{}';
         return usuario_logado;
     },
@@ -63,12 +73,13 @@ const funcoes = {
     },
 
     NomeUsuarioLogado() {
+        //Retorna o nome do usuário que esta logado
         let usuario_logado = JSON.parse(localStorage.getItem('usuarioLogado'));
         return usuario_logado.usuario;
     },
 
     AtualizaUsuarioArmazenamento(usuario_atualizado) {
-        //Atualiza os dados de um usuario no localstorage 
+        //Atualiza os dados de um usuario no localstorage
         let usuarios = JSON.parse(localStorage.getItem('usuarios'));
         let indice_usuario_atualizado = usuarios.findIndex((usuario => usuario.usuario === usuario_atualizado.usuario));
 
@@ -111,7 +122,7 @@ const funcoes = {
         }
 
         //Modifica o status do lead apenas se for para o status seguinte (1->2, 2->3)
-        if(status != lead.status + 1) {
+        if(status !== lead.status + 1) {
             return false;
         }
 

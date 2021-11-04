@@ -1,3 +1,9 @@
+<!--
+    Conteúdo da janela de gerenciamento dos leads, contendo o painel
+    com os leads cadastrado do usuário e a opção de cadastrar novos.
+    Também contém o componente responsavel pelo cadastro dos leads.
+-->
+
 <template>
     <div>
         <FormCadastroLead v-show="mostrar_cadastro_leads" @fechar="esconderCadastro" @cadastrado="cadastroConcluido"/>
@@ -20,6 +26,7 @@
                         <h1>Cliente em Potencial</h1>
                     </div>
                     <div class="container-cards" @drop="colocarCard($event, 1)" @dragenter.prevent @dragover.prevent>
+                        <!-- Coluna onde os leads podem ser arrastrados -->
                         <CardLead v-for="lead in leads_em_potencial" :key="lead.id" :objeto_lead="lead"/>
                         <div id="container-botao-lead">
                             <BotaoPrincipal texto_botao="Novo Lead (+)" @click="mostrarCadastro"/>
@@ -32,6 +39,7 @@
                         <h1>Dados Confirmados</h1>
                     </div>
                     <div class="container-cards" @drop="colocarCard($event, 2)" @dragenter.prevent @dragover.prevent>
+                        <!-- Coluna onde os leads podem ser arrastrados -->
                         <CardLead v-for="lead in leads_dados_confirmados" :key="lead.id" :objeto_lead="lead"/>
                     </div>
                 </div>
@@ -41,6 +49,7 @@
                         <h1>Reunião Agendada</h1>
                     </div>
                     <div class="container-cards" @drop="colocarCard($event, 3)" @dragenter.prevent @dragover.prevent>
+                        <!-- Coluna onde os leads podem ser arrastrados -->
                         <CardLead v-for="lead in leads_reuniao_agendada" :key="lead.id" :objeto_lead="lead"/>
                     </div>
                 </div>
@@ -106,13 +115,15 @@
                 this.lista_leads = Armazenamento.LeadsUsuarioLogado();
             },
             colocarCard(event, status_coluna) {
+                //Rotina executada quando um card é solto naquela coluna
                 //Recupera os dados do card
                 const id_card = event.dataTransfer.getData('id_card');
 
-                //Indice onde o card estava na lista
+                //Recupera o card localizado na lista de leads
                 const indice_lead = this.lista_leads.findIndex((item => item.id == id_card));
                 let lead_arrastado = this.lista_leads[indice_lead];
 
+                //Pode retornar falso caso o card esteja sendo arrastado para uma posição inválida (Ex 1->3, 3->2)
                 if(Armazenamento.AtualizaStatusLead(lead_arrastado, status_coluna)) {
                     //Atualiza a lista de leads com os status atualizados
                     this.carregarLeads();
@@ -214,7 +225,6 @@
     }
 
     .coluna-leads {
-        /*background-color: turquoise;*/
         height: 80%;
         width: 350px;
         margin-left: 5px;

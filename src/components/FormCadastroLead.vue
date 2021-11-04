@@ -1,3 +1,10 @@
+<!--
+    Componente do formulário de cadastro de um Lead. 
+    Possui vários componentes de checkbox e inputs de texto e um
+    componente de janela flutuante, que é a mensagem de confirmação
+    após um cadastro ser concluido com sucesso.
+-->
+
 <template>
     <div>
         <JanelaFlutuante v-show="true" @fechar="fecharJanela">
@@ -6,44 +13,24 @@
                     <div id="titulo-cadastro">
                         <h1>Novo Lead</h1>
                     </div>
+
                     <form id="form-cadastro-lead" @submit="cadastrarLead">
-                        <div class="container-input">
-                            <label for="usuario">Nome*</label>
-                            <input type="text" id="usuario" name="usuario" v-model="input_nome_cliente" placeholder="" required oninvalid="this.setCustomValidity('Insira nome do cliente aqui')" oninput="this.setCustomValidity('')">
+                        <div id="container-inputs">
+                            <div id="container-inputs-texto">
+                                <InputTexto texto_label="Nome*" tipo_input="text" nome_input="nome" v-model:conteudo_input="input_nome_cliente" />
+                                <InputTexto texto_label="Telefone*" tipo_input="text" nome_input="telefone" v-model:conteudo_input="input_telefone_cliente" />
+                                <InputTexto texto_label="Email*" tipo_input="text" nome_input="email" v-model:conteudo_input="input_email_cliente" />
+                            </div>
+                            <br>
+                            <div id="container-checkboxes">
+                                <h1>Oportunidades*</h1>
+                                <InputCheckbox texto_label="Todos" nome_input="todos" v-model:conteudo_input="oportunidade_todos" @valorAlterado="marcarTodos"/>
+                                <InputCheckbox texto_label="Analytics" nome_input="analytics" v-model:conteudo_input="oportunidade_analytics" @valorAlterado="atualizarCheckboxtodos"/>
+                                <InputCheckbox texto_label="BPM" nome_input="bpm" v-model:conteudo_input="oportunidade_bpm" @valorAlterado="atualizarCheckboxtodos"/>
+                                <InputCheckbox texto_label="Produto Digital" nome_input="produto_digital" v-model:conteudo_input="oportunidade_produto_digital" @valorAlterado="atualizarCheckboxtodos"/>
+                                <InputCheckbox texto_label="RPA" nome_input="rpa" v-model:conteudo_input="oportunidade_rpa" @valorAlterado="atualizarCheckboxtodos"/>
+                            </div>
                         </div>
-                        <div class="container-input">
-                            <label for="usuario">Telefone*</label>
-                            <input type="text" id="usuario" name="usuario" v-model="input_telefone_cliente" placeholder="" required oninvalid="this.setCustomValidity('Insira o telefone do cliente aqui')" oninput="this.setCustomValidity('')">
-                        </div>
-                        <div class="container-input">
-                            <label for="usuario">Email*</label>
-                            <input type="text" id="usuario" name="usuario" v-model="input_email_cliente" placeholder="" required oninvalid="this.setCustomValidity('Insira o email do cliente aqui')" oninput="this.setCustomValidity('')">
-                        </div>
-
-                        <br>
-                        <label >Oportunidades*</label>
-                        <br>
-                        <div class="container-checkbox">
-                            <input type="checkbox" name="todos" id="todos" v-model="oportunidade_todos" @click="marcarTodos">
-                            <label for="todos">Todos</label>
-                        </div>
-                        <div class="container-checkbox">
-                            <input type="checkbox" name="RPA" id="rpa" v-model="oportunidade_rpa" @click="atualizarCheckboxtodos">
-                            <label for="rpa">RPA</label>
-                        </div>
-                        <div class="container-checkbox">
-                            <input type="checkbox" name="Produto Digital" id="produto_digital" v-model="oportunidade_produto_digital" @click="atualizarCheckboxtodos">
-                            <label for="produto_digital">Produto Digital</label>
-                        </div>
-                        <div class="container-checkbox">
-                            <input type="checkbox" name="Analytics" id="analytics" v-model="oportunidade_analytics" @click="atualizarCheckboxtodos">
-                            <label for="analytics">Analytics</label>
-                        </div>
-                        <div class="container-checkbox">
-                            <input type="checkbox" name="BPM" id="bpm" v-model="oportunidade_bpm" @click="atualizarCheckboxtodos">
-                            <label for="bpm">BPM</label>
-                        </div>
-
                         <br>
                         <MensagemErro :mensagem="mensagem_erro_cadastro" v-show="mensagem_erro_cadastro" />
 
@@ -63,6 +50,8 @@
     import MensagemErro from './MensagemErro.vue';
     import AutenticadorCadastroLead from '../controllers/AutenticadorCadastroLead';
     import Armazenamento from '../controllers/Armazenamento';
+    import InputTexto from './InputTexto.vue';
+    import InputCheckbox from './InputCheckbox.vue';
 
     export default {
         name: 'FormCadastroLead',
@@ -76,7 +65,7 @@
                 oportunidade_analytics: false,
                 oportunidade_bpm: false,
                 oportunidade_todos: false,
-                mensagem_erro_cadastro: ''
+                mensagem_erro_cadastro: '',
             }
         },
         components: {
@@ -84,7 +73,9 @@
             MensagemErro,
             BotaoPrincipal,
             AutenticadorCadastroLead,
-            Armazenamento
+            Armazenamento,
+            InputTexto,
+            InputCheckbox
         },
         methods: {
             fecharJanela() {
@@ -104,9 +95,6 @@
                     this.oportunidade_produto_digital = this.oportunidade_todos;
                     this.oportunidade_analytics = this.oportunidade_todos;
                     this.oportunidade_bpm = this.oportunidade_todos;
-
-                    console.log("oportunidade_todos: " + this.oportunidade_todos);
-                    console.log("oportunidade_rpa: " + this.oportunidade_rpa);
                 }, 0);
             },
             atualizarCheckboxtodos() {
@@ -152,69 +140,55 @@
         width: 50%;
         margin-left: 25%;
         margin-right: 25%;
+        padding-bottom: 15px;
         border: none;
         border-bottom: 0.001em solid rgb(207, 207, 207);
     }
 
     #conteudo-cadastro-lead {
-        width: 350px;
+        width: 650px;
         display: flex;
         flex-direction: column;
-        align-items: left;
+        align-items: center;
         margin: 0 auto;
     }
 
     #form-cadastro-lead {
-        width: 350px;
-        display: flex;
-        flex-direction: column;
-        align-items: left;
+        width: 100%;
         padding: 35px 45px;
         padding-bottom: 0px;
     }
     
     #container-botao-salvar-lead {
+        width: 200px;
+        margin: 0 auto;
         margin-top: 20px;
-        justify-content: center;
+    }
+
+    #container-inputs {
+        display: flex;
+        align-items: flex-start;
+        
+        justify-content: space-around;
+    }
+
+    #container-inputs-texto {
+        width: 55%;
+        margin-right: 40px;
+    }
+
+    #container-checkboxes h1 {
+        text-align: left;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #14202c;
+    }
+
+    #container-checkboxes {
+        width: 45%;
+        align-items: flex-end;
+        margin-left: 40px;
     }
     
-    .container-input {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 20px;
-    }
-
-    .container-checkbox {
-        display: flex;
-        margin-bottom: 10px;
-    }
-
-    .container-checkbox label{
-        text-align: center;
-        justify-items: center;
-        margin: auto 0;
-        margin-left: 5px;
-        font-size: 16px;
-    }
-
-    input[type=checkbox] {
-        width: 20px;
-        height: 20px;
-    }
-
-    input{
-        padding: 5px 10px;
-        width: 100%;
-        height: 40px;
-        font-size: 16px;
-    }
-
-    input[type=text] {
-        border: none;
-        border-bottom: 0.001em solid #8693a0;
-    }
-
-    input[type=text]:focus {
-        outline: none;
-    }
 </style>

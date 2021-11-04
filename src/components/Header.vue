@@ -1,3 +1,10 @@
+<!--
+    Componente de Header para uma pagina.
+    Contém a logo do site, com um link clicável para a pagina de home,
+    uma saudação com o nome do usuário logado e um botão para desconectar.
+    Poderia ser reutilizado em outras paginas, se houvessem.
+-->
+
 <template>
     <div id="header-gerenciamento">
         <router-link to="/" id="logo-url">
@@ -71,5 +78,10 @@
         border: none;
         color: rgb(100, 144, 153);
         cursor: pointer;
+        transition: 0.25s;
+    }
+
+    #header-gerenciamento a:hover{
+        color: rgb(173, 220, 230);
     }
 </style>

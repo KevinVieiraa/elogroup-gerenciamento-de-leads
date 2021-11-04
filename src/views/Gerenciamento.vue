@@ -1,6 +1,6 @@
 <template>
-	<Header />
 	<div>
+		<Header />
 		<JanelaGerenciamento />
   	</div>
 </template>
@@ -14,6 +14,9 @@
 		components: {
 			Header,
 			JanelaGerenciamento
+		},
+		beforeCreate() {
+			document.title = "Painel - Gerenciamento de Leads"
 		}
 	}
 </script>

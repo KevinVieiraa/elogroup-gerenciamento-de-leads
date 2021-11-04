@@ -1,3 +1,8 @@
+<!--
+    Botao para ser utilizado em uma ação que se deseja destacar
+    por exemplo, a opção "Cadastrar" no formulário de cadastro.
+-->
+
 <template>
     <div class="container-botao">
         <input type="submit" class="botao" :value="texto_botao">

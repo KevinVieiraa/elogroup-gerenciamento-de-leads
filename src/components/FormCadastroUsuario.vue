@@ -1,24 +1,17 @@
+<!--
+    Componente de formulário de cadastro de um usuário.
+    Possui componentes de inputs de texto e senha.
+-->
+
 <template>
     <div>
         <div id="janela-login">
             <img src="/imagens/logo.jpg" alt="">
             <form id="form-login" @submit="tentarCadastrar">
-                <div class="container-input">
-                    <label for="usuario">Usuário*</label>
-                    <input type="text" id="usuario" name="usuario" v-model="input_usuario" placeholder="" required oninvalid="this.setCustomValidity('Insira seu usuário aqui')" oninput="this.setCustomValidity('')">
-                </div>
-                <div class="container-input">
-                    <label for="senha">Senha*</label>
-                    <input type="password" id="senha" name="senha" v-model="input_senha" placeholder="" required oninvalid="this.setCustomValidity('Insira sua senha aqui')" oninput="this.setCustomValidity('')">
-                </div>
-                <div class="container-input">
-                    <label for="senha">Confirme a Senha*</label>
-                    <input type="password" id="confirmacao_senha" name="confirmacao_senha" v-model="input_confirmacao_senha" placeholder="" required oninvalid="this.setCustomValidity('Repita sua senha aqui')" oninput="this.setCustomValidity('')">
-                </div>
+                <InputTexto texto_label="Usuário*" tipo_input="text" nome_input="usuario" v-model:conteudo_input="input_usuario" />
+                <InputTexto texto_label="Senha*" tipo_input="password" nome_input="senha" v-model:conteudo_input="input_senha" />
+                <InputTexto texto_label="Confirme a Senha*" tipo_input="password" nome_input="confirmacao_senha" v-model:conteudo_input="input_confirmacao_senha" />
                 <MensagemErro :mensagem="mensagem_erro_cadastro" v-show="mensagem_erro_cadastro" />
-                <!--<div class="container-input">
-                    <input type="submit" class="botao-cadastrar" value="Cadastrar-se">
-                </div>-->
                 <br>
                 <BotaoPrincipal texto_botao="Cadastrar-se" />
             </form>
@@ -30,6 +23,7 @@
 <script>
     import MensagemErro from './MensagemErro.vue';
     import BotaoPrincipal from './BotaoPrincipal.vue';
+    import InputTexto from './InputTexto.vue';
     import AutenticadorCadastro from '../controllers/AutenticadorCadastro'
     import Armazenamento from '../controllers/Armazenamento';
     
@@ -45,6 +39,7 @@
         },
         components: {
             BotaoPrincipal,
+            InputTexto,
             MensagemErro,
             Armazenamento
         },

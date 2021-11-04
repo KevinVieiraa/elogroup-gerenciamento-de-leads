@@ -1,21 +1,17 @@
+<!--
+    Componente de formulário de autenticação e login de um usuário.
+    Possui componentes de input de texto e senha.
+-->
+
 <template>
     <div>
         <div id="janela-login">
             <img src="/imagens/logo.jpg" alt="">
             <form id="form-login" @submit="tentarAutenticar">
-                <div class="container-input">
-                    <label for="usuario">Usuário</label>
-                    <input type="text" id="usuario" name="usuario" v-model="input_usuario" placeholder="" required oninvalid="this.setCustomValidity('Insira seu usuário aqui')" oninput="this.setCustomValidity('')">
-                </div>
-                <div class="container-input">
-                    <label for="senha">Senha</label>
-                    <input type="password" id="senha" name="senha" v-model="input_senha" placeholder="" required oninvalid="this.setCustomValidity('Insira sua senha aqui')" oninput="this.setCustomValidity('')">
-                </div>
+                <InputTexto texto_label="Usuário" tipo_input="text" nome_input="usuario" v-model:conteudo_input="input_usuario" />
+                <InputTexto texto_label="Senha" tipo_input="password" nome_input="senha_login" v-model:conteudo_input="input_senha" />
                 <MensagemErro :mensagem="mensagem_erro_login" v-show="mensagem_erro_login" />
                 <br>
-                <!--<div class="container-input">
-                    <input type="submit" class="botao-login" value="Entrar">
-                </div>-->
                 <BotaoPrincipal texto_botao="Entrar" />
             </form>
             <h2>ou <a href="/cadastro">cadastre-se</a></h2>
@@ -25,6 +21,7 @@
 
 <script>
     import BotaoPrincipal from './BotaoPrincipal.vue';
+    import InputTexto from './InputTexto.vue';
     import MensagemErro from './MensagemErro.vue';
     import AutenticadorLogin from '../controllers/AutenticadorLogin';
     import Armazenamento from '../controllers/Armazenamento';
@@ -40,6 +37,7 @@
         },
         components: {
             BotaoPrincipal,
+            InputTexto,
             MensagemErro,
             Armazenamento
         },
@@ -49,16 +47,18 @@
                 evento.preventDefault();
                 const resposta = await AutenticadorLogin(this.input_usuario, this.input_senha);
 
+                //Atualiza a mensagem de erro caso haja alguma
                 this.mensagem_erro_login = resposta.mensagem_erro;
 
                 if(resposta.foi_autenticado) {
-                    //console.log("Redirecionando para gerenciamento");
+                    //Redireciona para a pagina de gerenciamento
                     this.$router.replace('/gerenciamento');
                 }
             }
         },
         beforeCreate() {
             if(Armazenamento.UsuarioEstaLogado()) {
+                //Redireciona para a pagina de gerenciamento caso haja uma tentativa de acesso já estando logado
                 this.$router.replace('/gerenciamento');
             }
         }
@@ -99,34 +99,4 @@
         font-weight: bold;
         color: #1822dc;
     }
-
-    .container-input {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 20px;
-    }
-
-    input{
-        padding: 5px 10px;
-        width: 100%;
-        height: 40px;
-        font-size: 16px;
-    }
-
-    input[type=text], input[type=password] {
-        border: none;
-        border-bottom: 0.001em solid #8693a0;
-    }
-
-    input[type=text]:focus, input[type=password]:focus {
-        outline: none;
-    }
-
-    label {
-        font-weight: 600;
-        margin-bottom: 5px;
-        color: #14202c;
-        padding: 0 5px;
-    }
-
 </style>

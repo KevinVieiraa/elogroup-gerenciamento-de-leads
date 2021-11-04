@@ -1,3 +1,10 @@
+<!--
+    Componente que encapsula uma mensagem de erro estilizada.
+    Foi utilizada em todas as partes onde uma mensagem de erro 
+    deveria ser exibida: no login, cadastro de usuario, e no 
+    cadastro de leads.
+-->
+
 <template>
     <div class="container-mensagem">
         <p>{{ mensagem }}</p>

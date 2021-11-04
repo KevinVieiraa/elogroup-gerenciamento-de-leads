@@ -11,6 +11,9 @@
 		name: 'Login',
 		components: {
 			FormLogin
+		},
+		beforeCreate() {
+			document.title = "Login - Gerenciamento de Leads"
 		}
 	}
 </script>

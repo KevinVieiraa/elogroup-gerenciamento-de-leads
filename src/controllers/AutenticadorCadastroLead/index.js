@@ -1,5 +1,13 @@
 import Armazenamento from '../Armazenamento'
 
+/* 
+    Módulo responsável pelo controle do cadastro de um lead.
+    Recebe os parâmetros do formulário de cadastro, verifica os
+    requisitos necessários e retorna a resposta.
+
+    A resposta é um objeto contendo uma mensagem, em caso de erro,
+    e a confirmação se foi cadastrado.
+*/
 export default function(input_nome_cliente, input_telefone_cliente, input_email_cliente, oportunidade_rpa, oportunidade_produto_digital, oportunidade_analytics, oportunidade_bpm) {
     let resposta = {
         mensagem_erro: '',
@@ -32,7 +40,7 @@ export default function(input_nome_cliente, input_telefone_cliente, input_email_
         oportunidades.push("BPA");
     }
     if(oportunidade_produto_digital){
-        oportunidades.push("Produto Digital");
+        oportunidades.push("ProdutoDigital");
     }
     if(oportunidade_rpa){
         oportunidades.push("RPA");

@@ -1,24 +1,14 @@
 <template>
+	<title>Cadastro</title>
 	<router-view></router-view>
 </template>
 
 <script>
-	import Header from './components/Header.vue';
 	import Armazenamento from './controllers/Armazenamento'
 
 	export default {
 		components: {
-			Header,
 			Armazenamento
-		},
-		data() {
-			return {
-				url_logo: '/imagens/logo.png',
-				alt_logo: 'Gerenciador de Leads'
-			}
-		},
-		methods: {
-
 		},
 		beforeCreate() {
 			Armazenamento.Inicializar();
@@ -27,13 +17,7 @@
 </script>
 
 <style>
-	.fade-enter-active, .fade-leave-active {
-		transition: opacity .5s;
-	}
-	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-		opacity: 0;
-	}
-
+	/* Definicao de estilos globais */
 	* {
 		font-family: Helvetica;
 		padding: 0;
